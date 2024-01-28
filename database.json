@@ -1,0 +1,17 @@
+{
+  "dev": {
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "database": "lib_mng_sys",
+    "user": "postgres",
+    "password": "123456"
+  },
+  "test": {
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "database": "lib_mng_sys_test",
+    "user": "postgres",
+    "password": "123456"
+  },
+  "sql-file": true
+}
