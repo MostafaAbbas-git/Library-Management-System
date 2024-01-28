@@ -31,6 +31,8 @@ The server application is configured to run with a Postgresql database running w
 - Test database name: "lib_mng_sys_test"
 - Create the database for devolpment and testing by followint the steps below.
 
+  ![Database Diagram](/extras/DatabaseDiagram.png)
+
 ## Setting Up the Environment
 
 1. Install the requirements and dependancies
