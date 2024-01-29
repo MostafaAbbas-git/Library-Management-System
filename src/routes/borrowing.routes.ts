@@ -2,6 +2,7 @@ import express from 'express';
 import * as borrowingController from '../controllers/borrowing.controller';
 import rateLimit from 'express-rate-limit';
 import { authMiddleware } from '../middleware/auth.middleware';
+import { validateId } from '../middleware/validation.middleware';
 
 const router = express.Router();
 
@@ -12,22 +13,26 @@ const createBorrowingLimiter = rateLimit({
     'Too many borrowings created from this IP, please try again after an hour',
 });
 
-router.get('/all', borrowingController.getAllBorrowings);
-router.get('/show/:borrowingId', borrowingController.getBorrowingById);
+router.get('/all', [authMiddleware], borrowingController.getAllBorrowings);
 router.get(
-  '/export/overdue',
-  authMiddleware,
-  borrowingController.exportOverdueBorrowings
+  '/show/:id',
+  [authMiddleware, validateId],
+  borrowingController.getBorrowingById
 );
-router.get('/getOverdueBorrowings', borrowingController.getOverdueBorrowings);
+router.get('/export/overdue', borrowingController.exportOverdueBorrowings); // excluded from auth. to be used through web broweser directly for simplicity.
+router.get(
+  '/getOverdueBorrowings',
+  [authMiddleware],
+  borrowingController.getOverdueBorrowings
+);
 router.post(
   '/',
   [authMiddleware, createBorrowingLimiter],
   borrowingController.createBorrowing
 );
 router.patch(
-  '/update/return/:borrowingId',
-  authMiddleware,
+  '/update/return/:id',
+  [authMiddleware, validateId],
   borrowingController.returnBorrowing
 );
 

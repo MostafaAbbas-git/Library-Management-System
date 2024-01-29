@@ -1,21 +1,39 @@
 import express from 'express';
 import * as borrowerController from '../controllers/borrower.controller';
-import { validateInputsMiddleware } from '../middleware/validation.middleware';
+import {
+  validateId,
+  validateInputsMiddleware,
+} from '../middleware/validation.middleware';
+import { authMiddleware } from '../middleware/auth.middleware';
 
 const router = express.Router();
 
-router.get('/all', borrowerController.getAllBorrowers);
-router.get('/show/:borrowerId', borrowerController.getBorrowerById);
+router.get('/all', [authMiddleware], borrowerController.getAllBorrowers);
+router.get(
+  '/show/:id',
+  [authMiddleware, validateId],
+  borrowerController.getBorrowerById
+);
 router.post(
   '/',
-  validateInputsMiddleware(['name', 'email', 'registered_date']),
+  [
+    authMiddleware,
+    validateInputsMiddleware(['name', 'email', 'registered_date']),
+  ],
   borrowerController.createBorrower
 );
 router.patch(
-  '/update/:borrowerId',
-  validateInputsMiddleware(['name', 'email', 'registered_date']),
+  '/update/:id',
+  [
+    authMiddleware,
+    validateInputsMiddleware(['name', 'email', 'registered_date']),
+  ],
   borrowerController.updateBorrower
 );
-router.delete('/delete/:borrowerId', borrowerController.deleteBorrower);
+router.delete(
+  '/delete/:id',
+  [authMiddleware, validateId],
+  borrowerController.deleteBorrower
+);
 
 export default router;

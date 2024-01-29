@@ -1,12 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 
-export const validateBookId = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const validateId = (req: Request, res: Response, next: NextFunction) => {
   const id = parseInt(req.params.id);
-  return id ? next() : res.status(400).send('Invalid book ID');
+  return id ? next() : res.status(400).send('Invalid ID');
 };
 
 export const validateBorrowerInputsMiddleware = (

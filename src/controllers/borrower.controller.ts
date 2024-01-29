@@ -22,7 +22,7 @@ export const getBorrowerById = async (
   res: Response,
   next: NextFunction
 ) => {
-  const borrowerId = parseInt(req.params.borrowerId);
+  const borrowerId = parseInt(req.params.id);
   try {
     const borrower = await borrowerService.show(borrowerId);
     if (!borrower) {
@@ -52,7 +52,7 @@ export const updateBorrower = async (
   res: Response,
   next: NextFunction
 ) => {
-  const borrowerId = parseInt(req.params.borrowerId);
+  const borrowerId = parseInt(req.params.id);
   try {
     const updatedBorrower = await borrowerService.update(borrowerId, req.body);
     if (!updatedBorrower) {
@@ -69,7 +69,7 @@ export const deleteBorrower = async (
   res: Response,
   next: NextFunction
 ) => {
-  const borrowerId = parseInt(req.params.borrowerId);
+  const borrowerId = parseInt(req.params.id);
   try {
     const deletedBorrower = await borrowerService.delete(borrowerId);
     if (!deletedBorrower) {

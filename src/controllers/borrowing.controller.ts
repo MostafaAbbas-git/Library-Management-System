@@ -21,7 +21,7 @@ export const getBorrowingById = async (
   res: Response,
   next: NextFunction
 ) => {
-  const id = parseInt(req.params.borrowingId);
+  const id = parseInt(req.params.id);
   try {
     const borrowing = await borrowingService.showBorrowingById(id);
     if (!borrowing) {
@@ -51,7 +51,7 @@ export const returnBorrowing = async (
   res: Response,
   next: NextFunction
 ) => {
-  const id = parseInt(req.params.borrowingId);
+  const id = parseInt(req.params.id);
   try {
     const returnedBorrowing = await borrowingService.returnBorrowing(id);
     if (!returnedBorrowing) {

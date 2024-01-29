@@ -50,7 +50,7 @@ export const updateBook = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const bookId = parseInt(req.params.bookId);
+  const bookId = parseInt(req.params.id);
   try {
     const updatedBook = await bookService.update(bookId, req.body);
     if (!updatedBook) {
