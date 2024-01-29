@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { DashboardService } from '../services/dashboard.service';
-import { CustomError } from '../middleware/errorHandler.middleware';
 
 const dashboardService = new DashboardService();
 

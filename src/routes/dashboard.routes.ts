@@ -27,12 +27,12 @@ router.get(
 router.get(
   '/available-checkedout',
   authMiddleware,
-  dashboardController.getbooksAvailableVsCheckedOut
+  dashboardController.getBooksAvailableVsCheckedOut
 );
 router.get(
   '/late-Borrowers',
   authMiddleware,
-  dashboardController.getlateReturnRateByBorrower
+  dashboardController.getLateReturnRateByBorrower
 );
 
 export default router;

@@ -35,10 +35,33 @@ async function seedBorrowers() {
   }
 }
 
+async function seedBorrowings() {
+  const books = await pool.query('SELECT id FROM books');
+  const borrowers = await pool.query('SELECT id FROM borrowers');
+
+  for (let i = 0; i < 10; i++) {
+    const bookId =
+      books.rows[faker.datatype.number({ min: 0, max: books.rows.length - 1 })]
+        .id;
+    const borrowerId =
+      borrowers.rows[
+        faker.datatype.number({ min: 0, max: borrowers.rows.length - 1 })
+      ].id;
+    const checkoutDate = faker.date.past(1);
+    const dueDate = faker.date.future(1, checkoutDate);
+
+    await pool.query(
+      'INSERT INTO borrowings (book_id, borrower_id, checkout_date, due_date) VALUES ($1, $2, $3, $4)',
+      [bookId, borrowerId, checkoutDate, dueDate]
+    );
+  }
+}
+
 async function seed() {
   try {
     await seedBooks();
     await seedBorrowers();
+    await seedBorrowings();
     console.log('Seeding completed!');
   } catch (err) {
     console.error('Error seeding data:', err);
