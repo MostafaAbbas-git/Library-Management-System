@@ -36,6 +36,27 @@ export class BookModel {
       throw new Error(`Unable to show book ${id}: ${err}`);
     }
   }
+
+  async search(query: string): Promise<Book[]> {
+    try {
+      const conn = await Client.connect();
+
+      const sql = `
+      SELECT *, ts_rank_cd(to_tsvector('english', title || ' ' || author || ' ' || isbn), query) AS rank
+      FROM books, to_tsquery('english', replace($1, ' ', '&')) query
+      WHERE query @@ to_tsvector('english', title || ' ' || author || ' ' || isbn)
+      ORDER BY rank DESC;
+      `;
+
+      const result = await conn.query(sql, [`%${query}%`]);
+
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Error searching for books: ${err}`);
+    }
+  }
+
   async create(b: Book): Promise<Book> {
     try {
       const conn = await Client.connect();

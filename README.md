@@ -154,8 +154,9 @@ The server application is configured to run with a Postgresql database running w
 | HTTP Method | Endpoint                                    | Description                                     | Access Control |
 | ----------- | ------------------------------------------- | ----------------------------------------------- | -------------- |
 | POST        | `/books`                                    | Add a new book                                  | User           |
-| GET         | `/books/all`                                | Retrieve all books                              | User           |
-| GET         | `/books/show/:id`                           | Retrieve a specific book by ID                  | User           |
+| GET         | `/books/all`                                | Retrieve all books                              | Public         |
+| GET         | `/books/show/:id`                           | Retrieve a specific book by ID                  | Public         |
+| GET         | `/books/search`                             | Search for a specific book                      | Public         |
 | PATCH       | `/books/update/:id`                         | Update a specific book by ID                    | User           |
 | DELETE      | `/books/delete/:id`                         | Delete a specific book by ID                    | User           |
 | POST        | `/borrowers`                                | Register a new borrower                         | User           |

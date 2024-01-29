@@ -31,6 +31,20 @@ export const getBookById = async (
     next(err);
   }
 };
+export const searchBooks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const query = req.query.query as string;
+
+    const books = await bookService.searchBooks(query);
+    res.status(200).json(books);
+  } catch (err) {
+    next(err);
+  }
+};
 
 export const createBook = async (
   req: Request,

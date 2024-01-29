@@ -8,12 +8,10 @@ import { authMiddleware } from '../middleware/auth.middleware';
 
 const router = express.Router();
 
-router.get('/all', authMiddleware, bookController.getAllBooks);
-router.get(
-  '/show/:id',
-  [authMiddleware, validateId],
-  bookController.getBookById
-);
+router.get('/all', bookController.getAllBooks);
+router.get('/show/:id', [validateId], bookController.getBookById);
+router.get('/search', bookController.searchBooks);
+
 router.post(
   '/',
   [

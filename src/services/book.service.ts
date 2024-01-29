@@ -18,6 +18,13 @@ export class BookService {
       throw new Error(`Error retrieving book: ${error}`);
     }
   }
+  async searchBooks(query: string): Promise<Book[]> {
+    try {
+      return await this.bookModel.search(query);
+    } catch (error) {
+      throw new Error(`Error in book search service: ${error}`);
+    }
+  }
 
   async create(book: Book): Promise<Book> {
     try {
