@@ -42,10 +42,10 @@ export class BookModel {
       const conn = await Client.connect();
 
       const sql = `
-      SELECT *, ts_rank_cd(to_tsvector('english', title || ' ' || author || ' ' || isbn), query) AS rank
-      FROM books, to_tsquery('english', replace($1, ' ', '&')) query
-      WHERE query @@ to_tsvector('english', title || ' ' || author || ' ' || isbn)
-      ORDER BY rank DESC;
+      SELECT *
+      FROM books
+      WHERE to_tsvector('english', title || ' ' || author || ' ' || isbn) @@ plainto_tsquery('english', $1)
+      ORDER BY ts_rank_cd(to_tsvector('english', title || ' ' || author || ' ' || isbn), plainto_tsquery('english', $1)) DESC;
       `;
 
       const result = await conn.query(sql, [`%${query}%`]);

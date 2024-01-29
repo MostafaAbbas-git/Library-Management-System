@@ -13,3 +13,7 @@ CREATE INDEX idx_books_title ON books(title);
 CREATE INDEX idx_books_author ON books(author);
 
 CREATE INDEX idx_books_isbn ON books(isbn);
+
+CREATE INDEX idx_books_fulltext ON books USING gin (
+    to_tsvector('english', title || ' ' || author || ' ' || isbn)
+);
