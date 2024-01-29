@@ -151,28 +151,32 @@ The server application is configured to run with a Postgresql database running w
 - Full API Documentation:
   [Go to the Documentation Page](https://documenter.getpostman.com/view/14046968/2s9YyqihQv#1cab5ea7-1cdd-4b37-9f95-e855ebc3e947)
 
-| HTTP Method | Endpoint                                    | Description                                      | Access |
-| ----------- | ------------------------------------------- | ------------------------------------------------ | ------ |
-| POST        | `/books`                                    | Add a new book.                                  | User   |
-| GET         | `/books/all`                                | Retrieve all books.                              | Public |
-| GET         | `/books/show/:id`                           | Get details of a specific book by its ID.        | Public |
-| DELETE      | `/books/delete/:id`                         | Delete a specific book.                          | User   |
-| POST        | `/borrowers`                                | Register a new borrower.                         | User   |
-| GET         | `/borrowers/all`                            | Retrieve all borrowers.                          | User   |
-| GET         | `/borrowers/show/:id`                       | Get details of a specific borrower.              | User   |
-| PATCH       | `/borrowers/update/:id`                     | Update details of a specific borrower.           | User   |
-| DELETE      | `/borrowers/delete/:id`                     | Delete a specific borrower.                      | User   |
-| POST        | `/borrowings`                               | Create a new borrowing record.                   | User   |
-| GET         | `/borrowings/all`                           | View all borrowing records.                      | User   |
-| GET         | `/borrowings/show/:id`                      | Get details of a specific borrowing record.      | User   |
-| GET         | `/borrowings/export/overdue`                | Get spreadsheet.                                 | User   |
-| PATCH       | `/borrowings/update/return/:id`             | Mark a book as returned in the borrowing record. | User   |
-| POST        | `/users`                                    | Create a new user .                              | Public |
-| POST        | `/users/authenticate`                       | Authenticate a user and return a token.          | Public |
-| GET         | `/dashboard/most-borrowed-books`            | Get a list of most borrowed books.               | User   |
-| GET         | `/dashboard/borrowers-with-most-borrowings` | Get borrowers with the most borrowings.          | User   |
-| GET         | `/dashboard/overdue-books`                  | List books that are overdue.                     | User   |
-| GET         | `/dashboard/recent-borrowings`              | List recent borrowings.                          | User   |
+| HTTP Method | Endpoint                                    | Description                                     | Access Control |
+| ----------- | ------------------------------------------- | ----------------------------------------------- | -------------- |
+| POST        | `/books`                                    | Add a new book                                  | User           |
+| GET         | `/books/all`                                | Retrieve all books                              | User           |
+| GET         | `/books/show/:id`                           | Retrieve a specific book by ID                  | User           |
+| PATCH       | `/books/update/:id`                         | Update a specific book by ID                    | User           |
+| DELETE      | `/books/delete/:id`                         | Delete a specific book by ID                    | User           |
+| POST        | `/borrowers`                                | Register a new borrower                         | User           |
+| GET         | `/borrowers/all`                            | Retrieve all borrowers                          | User           |
+| GET         | `/borrowers/show/:id`                       | Retrieve a specific borrower by ID              | User           |
+| PATCH       | `/borrowers/update/:id`                     | Update a specific borrower by ID                | User           |
+| DELETE      | `/borrowers/delete/:id`                     | Delete a specific borrower by ID                | User           |
+| POST        | `/borrowings`                               | Create a new borrowing record                   | User           |
+| GET         | `/borrowings/all`                           | Retrieve all borrowing records                  | User           |
+| GET         | `/borrowings/show/:id`                      | Retrieve a specific borrowing record by ID      | User           |
+| PATCH       | `/borrowings/update/return/:id`             | Mark a book as returned in the borrowing record | User           |
+| GET         | `/borrowings/export/overdue`                | Export overdue borrowings                       | Public         |
+| GET         | `/borrowings/getOverdueBorrowings`          | Get overdue borrowing records                   | User           |
+| POST        | `/users`                                    | Create a new user                               | Public         |
+| POST        | `/users/authenticate`                       | Authenticate a user and return a token          | Public         |
+| GET         | `/dashboard/most-borrowed-books`            | Get the most borrowed books                     | User           |
+| GET         | `/dashboard/borrowers-with-most-borrowings` | Get borrowers with the most borrowings          | User           |
+| GET         | `/dashboard/overdue-books`                  | Get overdue books                               | User           |
+| GET         | `/dashboard/recent-borrowings`              | Get recent borrowings                           | User           |
+| GET         | `/dashboard/available-checkedout`           | Compare available and checked out books         | User           |
+| GET         | `/dashboard/late-Borrowers`                 | Get late return rate by borrower                | User           |
 
 ## Author
 
