@@ -43,6 +43,20 @@ export const createBook = async (
   }
 };
 
+export const updateBook = async (req: Request, res: Response) => {
+  const bookId = parseInt(req.params.bookId);
+  try {
+    const updatedBook = await bookService.update(bookId, req.body);
+    if (updatedBook) {
+      res.status(200).json(updatedBook);
+    } else {
+      res.status(404).json({ error: 'Book not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ error: 'Error updating book' });
+  }
+};
+
 export const deleteBook = async (
   req: Request,
   res: Response

@@ -1,4 +1,3 @@
-// server.ts
 import app from './app';
 
 const address: string = '0.0.0.0:3000';

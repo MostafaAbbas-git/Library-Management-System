@@ -19,6 +19,7 @@ router.get(
   authMiddleware,
   borrowingController.exportOverdueBorrowings
 );
+router.get('/getOverdueBorrowings', borrowingController.getOverdueBorrowings);
 router.post(
   '/',
   [authMiddleware, createBorrowingLimiter],

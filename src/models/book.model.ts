@@ -10,10 +10,11 @@ export type Book = {
 };
 
 export class BookModel {
-  async index(): Promise<Book[] | Error> {
+  async index(): Promise<Book[]> {
     try {
       const conn = await Client.connect();
-      const sql = 'SELECT * FROM books';
+      const sql =
+        'SELECT id, title, author, isbn, available_quantity, shelf_location FROM books';
       const result = await conn.query(sql);
       conn.release();
 
@@ -29,17 +30,14 @@ export class BookModel {
       const sql = 'SELECT * FROM books WHERE id=($1)';
       const result = await conn.query(sql, [id]);
       conn.release();
-      if (result.rows.length) {
-        return result.rows[0];
-      }
-      return null;
+
+      return result.rows.length ? result.rows[0] : null;
     } catch (err) {
       throw new Error(`Unable to show book ${id}: ${err}`);
     }
   }
-  async create(b: Book): Promise<Book | Error> {
+  async create(b: Book): Promise<Book> {
     try {
-      //@ts-ignore
       const conn = await Client.connect();
       const sql =
         'INSERT INTO books (title, author, isbn, available_quantity, shelf_location) VALUES($1, $2, $3, $4, $5) RETURNING *';
@@ -61,7 +59,6 @@ export class BookModel {
 
   async update(b: Book): Promise<Book | null> {
     try {
-      //@ts-ignore
       const conn = await Client.connect();
       const sql =
         'UPDATE books SET title=($1), author=($2), isbn=($3), available_quantity=($4), shelf_location=($5) WHERE id=($6) RETURNING *';
@@ -84,7 +81,6 @@ export class BookModel {
 
   async delete(id: number): Promise<Book | null> {
     try {
-      //@ts-ignore
       const conn = await Client.connect();
       const sql = 'DELETE FROM books WHERE id=($1) RETURNING *';
 

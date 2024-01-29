@@ -46,6 +46,14 @@ export const returnBorrowing = async (req: Request, res: Response) => {
   }
 };
 
+export const getOverdueBorrowings = async (req: Request, res: Response) => {
+  try {
+    const overdueBorrowings = await borrowingService.listOverdueBorrowings();
+    res.status(200).json(overdueBorrowings);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
 export const exportOverdueBorrowings = async (req: Request, res: Response) => {
   try {
     const buffer = await borrowingService.exportOverdueBorrowings();

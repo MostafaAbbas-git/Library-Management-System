@@ -1,6 +1,6 @@
 import express from 'express';
 import * as borrowerController from '../controllers/borrower.controller';
-import { validateBorrowerInputsMiddleware } from '../middleware/validation.middleware';
+import { validateInputsMiddleware } from '../middleware/validation.middleware';
 
 const router = express.Router();
 
@@ -8,12 +8,12 @@ router.get('/all', borrowerController.getAllBorrowers);
 router.get('/show/:borrowerId', borrowerController.getBorrowerById);
 router.post(
   '/',
-  validateBorrowerInputsMiddleware,
+  validateInputsMiddleware(['name', 'email', 'registered_date']),
   borrowerController.createBorrower
 );
 router.patch(
   '/update/:borrowerId',
-  validateBorrowerInputsMiddleware,
+  validateInputsMiddleware(['name', 'email', 'registered_date']),
   borrowerController.updateBorrower
 );
 router.delete('/delete/:borrowerId', borrowerController.deleteBorrower);

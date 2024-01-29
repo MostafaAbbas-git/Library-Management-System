@@ -33,12 +33,12 @@ export class DashboardService {
   }
 
   async overdueBooks(): Promise<
-    { title: string; author: string; due_date: Date }[]
+    { title: string; author: string; isbn: string; due_date: Date }[]
   > {
     try {
       const conn = await Client.connect();
       const sql =
-        'SELECT title, author, borrowings.due_date FROM books INNER JOIN borrowings ON books.id = borrowings.book_id WHERE borrowings.return_date IS NULL AND borrowings.due_date < CURRENT_DATE';
+        'SELECT title, author, isbn, borrowings.due_date FROM books INNER JOIN borrowings ON books.id = borrowings.book_id WHERE borrowings.return_date IS NULL AND borrowings.due_date < CURRENT_DATE';
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -61,6 +61,46 @@ export class DashboardService {
       return result.rows;
     } catch (err) {
       throw new Error(`Unable to get recent borrowings: ${err}`);
+    }
+  }
+
+  async lateReturnRateByBorrower(): Promise<any[]> {
+    try {
+      const conn = await Client.connect();
+      const sql = `
+        SELECT borrowers.name, borrowers.email, 
+               COUNT(*) FILTER (WHERE borrowings.due_date < borrowings.return_date) AS late_returns,
+               COUNT(*) AS total_borrowings,
+               (COUNT(*) FILTER (WHERE borrowings.due_date < borrowings.return_date)::float / COUNT(*)) * 100 AS late_return_rate 
+        FROM borrowers 
+        INNER JOIN borrowings ON borrowers.id = borrowings.borrower_id 
+        GROUP BY borrowers.id;
+      `;
+      const result = await conn.query(sql);
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Error calculating late return rate by borrower: ${err}`);
+    }
+  }
+  async booksAvailableVsCheckedOut(): Promise<any[]> {
+    try {
+      const conn = await Client.connect();
+      const sql = `
+        SELECT books.title, books.author, 
+               (books.available_quantity - COUNT(borrowings.book_id)) AS available_quantity, 
+               COUNT(borrowings.book_id) AS checked_out_quantity 
+        FROM books 
+        LEFT JOIN borrowings ON books.id = borrowings.book_id AND borrowings.return_date IS NULL 
+        GROUP BY books.id;
+      `;
+      const result = await conn.query(sql);
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      throw new Error(
+        `Error retrieving books available vs checked out: ${err}`
+      );
     }
   }
 }

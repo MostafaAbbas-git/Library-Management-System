@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
 interface UserMiddlewareInterface extends Object {
   id?: number;
   email?: string;

@@ -32,25 +32,6 @@ export class BorrowingModel {
       throw new Error(`Unable to find borrowing with ID ${id}: ${err}`);
     }
   }
-  async update(id: number): Promise<Borrowing | null> {
-    try {
-      const conn = await Client.connect();
-      const sql =
-        'UPDATE borrowings SET return_date = CURRENT_DATE WHERE id = $1 AND return_date IS NULL RETURNING *';
-
-      const result = await conn.query(sql, [id]);
-      conn.release();
-
-      if (result.rows.length) {
-        return result.rows[0];
-      } else {
-        return null; // Borrowing not found or already returned
-      }
-    } catch (err) {
-      throw new Error(`Unable to return borrowing with id: ${id}: ${err}`);
-    }
-  }
-
   async create(b: Borrowing): Promise<Borrowing> {
     try {
       const conn = await Client.connect();
@@ -69,6 +50,21 @@ export class BorrowingModel {
     }
   }
 
+  async update(id: number): Promise<Borrowing | null> {
+    try {
+      const conn = await Client.connect();
+      const sql =
+        'UPDATE borrowings SET return_date = CURRENT_DATE WHERE id = $1 AND return_date IS NULL RETURNING *';
+
+      const result = await conn.query(sql, [id]);
+      conn.release();
+
+      return result.rows.length ? result.rows[0] : null;
+    } catch (err) {
+      throw new Error(`Unable to return borrowing with id: ${id}: ${err}`);
+    }
+  }
+
   async delete(id: number): Promise<Borrowing | null> {
     try {
       const conn = await Client.connect();
@@ -80,7 +76,6 @@ export class BorrowingModel {
       throw new Error(`Could not delete borrowing ${id}. Error: ${err}`);
     }
   }
-
   async listOverdueBorrowings(): Promise<Borrowing[]> {
     try {
       const conn = await Client.connect();

@@ -28,7 +28,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/users', userRoutes);
-app.use('/books/', bookRoutes);
+app.use('/books', bookRoutes);
 app.use('/borrowings', borrowingRoutes);
 app.use('/borrowers', borrowerRoutes);
 app.use('/dashboard', dashboardRoutes);

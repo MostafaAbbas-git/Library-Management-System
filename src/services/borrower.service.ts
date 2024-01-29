@@ -4,15 +4,14 @@ import redisClient from '../startup/redisClient'; // Assuming Redis client setup
 export class BorrowerService {
   private borrowerModel = new BorrowerModel();
 
-  async index(): Promise<Borrower[] | Error> {
+  async index(): Promise<Borrower[]> {
     try {
-      const borrowers = await this.borrowerModel.index();
-      return borrowers;
+      return await this.borrowerModel.index();
     } catch (error) {
       throw new Error(`Error retrieving borrowers: ${error}`);
     }
   }
-  async show(id: number): Promise<Borrower | null | Error> {
+  async show(id: number): Promise<Borrower | null> {
     try {
       return await this.borrowerModel.show(id);
     } catch (error) {
@@ -20,7 +19,7 @@ export class BorrowerService {
     }
   }
 
-  async create(borrowerData: Borrower): Promise<Borrower | null | Error> {
+  async create(borrowerData: Borrower): Promise<Borrower | null> {
     try {
       return await this.borrowerModel.create(borrowerData);
     } catch (error) {
@@ -28,10 +27,7 @@ export class BorrowerService {
     }
   }
 
-  async update(
-    id: number,
-    borrowerData: Borrower
-  ): Promise<Borrower | null | Error> {
+  async update(id: number, borrowerData: Borrower): Promise<Borrower | null> {
     try {
       return await this.borrowerModel.update({ id, ...borrowerData });
     } catch (error) {
@@ -39,7 +35,7 @@ export class BorrowerService {
     }
   }
 
-  async delete(id: number): Promise<Borrower | null | Error> {
+  async delete(id: number): Promise<Borrower | null> {
     try {
       return await this.borrowerModel.delete(id);
     } catch (error) {

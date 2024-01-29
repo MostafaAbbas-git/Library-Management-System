@@ -1,4 +1,3 @@
-// src/controllers/user.controller.ts
 import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
 
@@ -15,7 +14,6 @@ export const authenticate = async (
     if (token) {
       req.headers['Authorization'] = `Bearer ${token}`;
       res.status(200).send(token);
-      // res.status(200).json({ token });
     } else {
       res.status(401).json({ error: 'Authentication failed' });
     }

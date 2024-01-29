@@ -31,9 +31,8 @@ export class UserModel {
     }
   }
 
-  async create(u: User): Promise<User | string> {
+  async create(u: User): Promise<User> {
     try {
-      // @ts-ignore
       const conn = await Client.connect();
       const sql =
         'INSERT INTO users (email, password) VALUES($1, $2) RETURNING *';
@@ -47,7 +46,7 @@ export class UserModel {
 
       return user;
     } catch (err) {
-      return `unable to create user (${u.email}): ${err}`;
+      throw new Error(`unable to create user (${u.email}): ${err}`);
     }
   }
 }

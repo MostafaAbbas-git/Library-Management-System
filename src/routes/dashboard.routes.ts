@@ -24,5 +24,15 @@ router.get(
   authMiddleware,
   dashboardController.getRecentBorrowings
 );
+router.get(
+  '/available-checkedout',
+  authMiddleware,
+  dashboardController.getbooksAvailableVsCheckedOut
+);
+router.get(
+  '/late-Borrowers',
+  authMiddleware,
+  dashboardController.getlateReturnRateByBorrower
+);
 
 export default router;

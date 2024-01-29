@@ -1,4 +1,3 @@
-// src/services/user.service.ts
 import { UserModel, User } from '../models/user.model';
 import jwt from 'jsonwebtoken';
 
@@ -9,15 +8,13 @@ export class UserService {
 
   async authenticate(email: string, password: string): Promise<string | null> {
     const user = await this.userModel.authenticate(email, password);
-    if (user) {
-      const token = jwt.sign({ id: user.id, email: user.email }, tokenSecret);
 
-      return token;
-    }
-    return null;
+    return user
+      ? jwt.sign({ id: user.id, email: user.email }, tokenSecret)
+      : null;
   }
 
-  async create(userData: User): Promise<User | string> {
+  async create(userData: User): Promise<User> {
     try {
       return await this.userModel.create(userData);
     } catch (error) {

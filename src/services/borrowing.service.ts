@@ -1,4 +1,3 @@
-// src/services/borrowing.service.ts
 import { Buffer, Workbook } from 'exceljs';
 import { Borrowing, BorrowingModel } from '../models/borrowing.model';
 import { format } from 'date-fns';
@@ -37,6 +36,14 @@ export class BorrowingService {
       return await this.borrowingModel.update(id);
     } catch (error) {
       throw new Error(`Error returning borrowing: ${error}`);
+    }
+  }
+
+  async listOverdueBorrowings(): Promise<Borrowing[]> {
+    try {
+      return await this.borrowingModel.listOverdueBorrowings();
+    } catch (error) {
+      throw new Error(`Error retrieving overdue borrowings: ${error}`);
     }
   }
 

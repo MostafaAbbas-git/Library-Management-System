@@ -1,4 +1,3 @@
-// src/controllers/dashboard.controller.ts
 import { Request, Response } from 'express';
 import { DashboardService } from '../services/dashboard.service';
 
@@ -37,6 +36,30 @@ export const getOverdueBooks = async (req: Request, res: Response) => {
 export const getRecentBorrowings = async (req: Request, res: Response) => {
   try {
     const borrowings = await dashboardService.recentBorrowings();
+    res.status(200).json(borrowings);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+export const getbooksAvailableVsCheckedOut = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const borrowings = await dashboardService.booksAvailableVsCheckedOut();
+    res.status(200).json(borrowings);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+export const getlateReturnRateByBorrower = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const borrowings = await dashboardService.lateReturnRateByBorrower();
     res.status(200).json(borrowings);
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
