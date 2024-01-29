@@ -7,7 +7,6 @@ export class BookService {
     try {
       return await this.bookModel.index();
     } catch (error) {
-      console.error(error);
       throw new Error(`Error retrieving books: ${error}`);
     }
   }

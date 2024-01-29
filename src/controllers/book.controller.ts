@@ -1,73 +1,80 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { BookService } from '../services/book.service';
+import { CustomError } from '../middleware/errorHandler.middleware';
 
 const bookService = new BookService();
 
 export const getAllBooks = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   try {
     const books = await bookService.index();
     res.status(200).json(books);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to retrieve books' });
+    next(err);
   }
 };
-
 export const getBookById = async (
   req: Request,
-  res: Response
-): Promise<void> => {
-  const bookId = parseInt(req.params.id);
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const book = await bookService.getBookById(bookId);
-    book
-      ? res.status(200).json(book)
-      : res.status(404).json({ error: 'Book not found' });
+    const book = await bookService.getBookById(parseInt(req.params.id));
+    if (!book) {
+      throw new CustomError(404, 'Book not found');
+    }
+    res.status(200).json(book);
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    next(err);
   }
 };
 
 export const createBook = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   try {
     const newBook = await bookService.create(req.body);
     res.status(201).json(newBook);
   } catch (err) {
-    res.status(400).json({ error: `Error creating book: ${err}` });
+    next(new CustomError(400, `Error creating book: ${err}`));
   }
 };
 
-export const updateBook = async (req: Request, res: Response) => {
+export const updateBook = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const bookId = parseInt(req.params.bookId);
   try {
     const updatedBook = await bookService.update(bookId, req.body);
-    if (updatedBook) {
-      res.status(200).json(updatedBook);
-    } else {
-      res.status(404).json({ error: 'Book not found' });
+    if (!updatedBook) {
+      throw new CustomError(404, 'Book not found');
     }
-  } catch (error) {
-    res.status(400).json({ error: 'Error updating book' });
+    res.status(200).json(updatedBook);
+  } catch (err) {
+    next(err);
   }
 };
 
 export const deleteBook = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const bookId = parseInt(req.params.id);
   try {
     const deletedBook = await bookService.delete(bookId);
-    deletedBook
-      ? res.status(200).json(deletedBook)
-      : res.status(404).json({ error: 'Book not found' });
+    if (!deletedBook) {
+      throw new CustomError(404, 'Book not found');
+    }
+    res.status(200).json(deletedBook);
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    next(err);
   }
 };

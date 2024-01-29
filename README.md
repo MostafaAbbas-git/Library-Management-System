@@ -111,6 +111,12 @@ The server application is configured to run with a Postgresql database running w
   $ npm run migrate-dev-up
   ```
 
+- Seed (It might take couple of seconds till a message get printed `Seeding completed!`)
+
+  ```sh
+  $ node migrations\seed\script.js
+  ```
+
 - Run the project
 
   - Host: localhost
