@@ -1,23 +1,26 @@
 import { createClient } from 'redis';
 
-// Define connection options with likely defaults (adjust as needed)
 const client = createClient({
-  url: 'redis://localhost:6379',
-  // Add authentication details if required:
-  // password: 'yourRedisPassword',
+  url: 'redis://127.0.0.1:6379',
 });
 
-// Enhanced connection handling with retries and logging:
+client.on('connect', () => console.log('Redis client connecting'));
+client.on('ready', () => console.log('Redis client ready'));
+client.on('error', (err) => console.error('Redis client error', err));
+client.on('end', () => console.log('Redis client disconnected'));
 
-client.on('ready', () => {
-  console.log('Redis client ready');
-});
+async function connectRedis() {
+  try {
+    await client.connect();
+  } catch (err) {
+    console.error('Failed to connect to Redis:', err);
+  }
+}
 
-client.on('error', (err) => {
-  console.error('Redis client error', err);
-});
+// Connect to Redis when the app starts
+connectRedis();
 
-// Graceful closure:
+// Graceful shutdown
 process.on('SIGINT', async () => {
   console.log('Closing Redis client');
   await client.quit();
