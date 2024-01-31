@@ -9,6 +9,7 @@ This is a Library Management System Api.
 - [Setting Up the Environment](#setting-up-the-environment)
 - [Redis Setup](#redis-setup)
 - [Run Scripts](#run-scripts)
+- [Dockerization](#dockerization)
 - [Endpoints](#endpoints)
 - [Author](#Author)
 - [About](#about)
@@ -189,6 +190,29 @@ For installations on platforms other than Windows 11, please refer to the offici
   $ npm run drop-test-db
 
   ```
+
+## Dockerization
+
+This application is Dockerized for easy setup and deployment. Follow these steps to run the application using Docker:
+
+1. **Prerequisites**:
+
+   - Ensure Docker and Docker Compose are installed on your system. If not, install them from [Docker's official site](https://www.docker.com/get-started).
+
+2. **Building the Docker Image**:
+
+   - At the root of the project, run `docker-compose up --build`. This command builds the Docker image and starts the container based on the `docker-compose.yml` file.
+
+3. **Running the Application**:
+
+   - Once the build process is complete and the container is running, the application will be accessible at `http://localhost:3000`.
+
+4. **Stopping the Application**:
+
+   - To stop the application, use `Ctrl + C` in the terminal and then run `docker-compose down` to stop and remove the container.
+
+5. **Using Docker in Development**:
+   - For development purposes, use `docker-compose -f docker-compose.debug.yml up --build`. This will start the application in development mode, allowing for debugging and live updates.
 
 ## Endpoints
 
