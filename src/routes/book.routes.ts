@@ -26,7 +26,7 @@ router.post(
   ],
   bookController.createBook
 );
-router.patch(
+router.put(
   '/update/:id',
   [
     authMiddleware,

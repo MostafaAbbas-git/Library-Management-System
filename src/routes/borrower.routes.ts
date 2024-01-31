@@ -22,7 +22,7 @@ router.post(
   ],
   borrowerController.createBorrower
 );
-router.patch(
+router.put(
   '/update/:id',
   [
     authMiddleware,
