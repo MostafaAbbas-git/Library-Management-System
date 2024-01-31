@@ -1,12 +1,33 @@
-version: '3.4'
+version: '3.8'
 
 services:
-  libmngsys:
-    image: libmngsys
+  app:
+    container_name: libmngsys-app
     build:
       context: .
-      dockerfile: ./Dockerfile
-    environment:
-      NODE_ENV: production
+      dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=lib_mng_sys
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+    depends_on:
+      - db
+
+  db:
+    container_name: libmngsys-db
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=lib_mng_sys
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

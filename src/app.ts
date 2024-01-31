@@ -15,7 +15,7 @@ const app = express();
 
 // Configuration
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:3001',
   optionSuccessStatus: 200,
 };
 
