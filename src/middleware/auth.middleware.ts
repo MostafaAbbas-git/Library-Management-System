@@ -29,10 +29,12 @@ export async function authMiddleware(
 
   try {
     const decoded = jwt.verify(String(token), String(tokenSecret));
-    const myObject: UserMiddlewareInterface = decoded;
-    req.user = myObject;
+    req.user = decoded as UserMiddlewareInterface;
     next();
   } catch (error: any) {
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).send('Token expired.');
+    }
     res.status(400).send({
       error: `${error.name}: ${error.message}`,
     });

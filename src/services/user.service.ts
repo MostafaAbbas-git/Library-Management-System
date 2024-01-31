@@ -2,6 +2,7 @@ import { UserModel, User } from '../models/user.model';
 import jwt from 'jsonwebtoken';
 
 const tokenSecret = String(process.env.TOKEN_SECRET);
+const expiresIn = '1h'; // Token expires in one hour
 
 export class UserService {
   private userModel = new UserModel();
@@ -10,7 +11,7 @@ export class UserService {
     const user = await this.userModel.authenticate(email, password);
 
     return user
-      ? jwt.sign({ id: user.id, email: user.email }, tokenSecret)
+      ? jwt.sign({ id: user.id, email: user.email }, tokenSecret, { expiresIn })
       : null;
   }
 
