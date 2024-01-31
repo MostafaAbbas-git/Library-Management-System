@@ -167,7 +167,7 @@ For installations on platforms other than Windows 11, please refer to the offici
 - Run the project
 
   - Host: localhost
-  - Port: 3001
+  - Port: 3000
 
   ```sh
   $ npm run start
