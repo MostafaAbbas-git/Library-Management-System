@@ -7,7 +7,9 @@ This is a Library Management System Api.
 - [Toolbox](#toolbox)
 - [Database Setup](#Database-Setup)
 - [Setting Up the Environment](#setting-up-the-environment)
-- [Endpoints ](#endpoints)
+- [Redis Setup](#redis-setup)
+- [Run Scripts](#run-scripts)
+- [Endpoints](#endpoints)
 - [Author](#Author)
 - [About](#about)
 
@@ -16,6 +18,7 @@ This is a Library Management System Api.
 - Typescript
 - Express
 - PostgreSQL
+- Redis
 
 ## Database Setup
 
@@ -88,6 +91,49 @@ The server application is configured to run with a Postgresql database running w
    $ \q
    ```
 
+## Redis Setup
+
+### Windows 11 Installation
+
+1. Install Windows Subsystem for Linux (WSL) if not already installed:
+
+   ```sh
+   wsl --install
+   ```
+
+   Follow prompts to reboot and set up a default Linux distribution, typically Ubuntu.
+
+2. Update and upgrade `apt-get`:
+
+   ```sh
+   sudo apt-get update
+   sudo apt-get upgrade
+   ```
+
+3. Install Redis Server:
+
+   ```sh
+   sudo apt-get install redis-server
+   ```
+
+4. Start and stop the Redis server as needed:
+
+   ```sh
+   sudo service redis-server start
+   sudo service redis-server stop
+   ```
+
+5. Optional: Set up Redis to start automatically on Windows boot. Create a batch file in the Windows startup folder with the command:
+   ```sh
+   wsl sudo service redis-server start
+   ```
+
+For more detailed instructions, refer to the full guide on [Redis.com](https://redis.com/blog/install-redis-windows-11/).
+
+### Installation on Other Platforms
+
+For installations on platforms other than Windows 11, please refer to the official Redis documentation for specific instructions.
+
 ## Run Scripts
 
 - Rename `.env.example` file to `.env`
@@ -143,8 +189,6 @@ The server application is configured to run with a Postgresql database running w
   $ npm run drop-test-db
 
   ```
-
----
 
 ## Endpoints
 
