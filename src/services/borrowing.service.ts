@@ -53,7 +53,6 @@ export class BorrowingService {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('Overdue Borrowings');
 
-    // Define columns
     worksheet.columns = [
       { header: 'Borrowing ID', key: 'id', width: 10 },
       { header: 'Book ID', key: 'book_id', width: 10 },
@@ -63,7 +62,6 @@ export class BorrowingService {
       { header: 'Return Date', key: 'return_date', width: 15 },
     ];
 
-    // Add rows
     borrowings.forEach((borrowing: Borrowing) => {
       worksheet.addRow({
         id: borrowing.id,
@@ -77,7 +75,6 @@ export class BorrowingService {
       });
     });
 
-    // Write to buffer
     const buffer: Buffer = await workbook.xlsx.writeBuffer();
     return buffer;
   }
