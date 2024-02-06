@@ -5,6 +5,11 @@ import { authMiddleware } from '../middleware/auth.middleware';
 const router = express.Router();
 
 router.get(
+  '/current-borrowings/:id',
+  authMiddleware,
+  dashboardController.getCurrentBooksByBorrowerId
+);
+router.get(
   '/most-borrowed-books',
   authMiddleware,
   dashboardController.getMostBorrowedBooks

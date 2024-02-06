@@ -28,6 +28,21 @@ export const getBorrowersWithMostBorrowings = async (
     next(error);
   }
 };
+export const getCurrentBooksByBorrowerId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const borrowerId = parseInt(req.params.id);
+    const books = await dashboardService.listCurrentBooksByBorrowerId(
+      borrowerId
+    );
+    res.status(200).json(books);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getOverdueBooks = async (
   req: Request,

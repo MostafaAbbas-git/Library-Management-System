@@ -2,6 +2,22 @@
 import Client from '../startup/database';
 
 export class DashboardService {
+  async listCurrentBooksByBorrowerId(
+    id: number
+  ): Promise<{ title: string; author: string; isbn: string }[]> {
+    try {
+      const conn = await Client.connect();
+      const sql =
+        'SELECT title, author, isbn FROM books b JOIN borrowings brw ON b.id = brw.book_id JOIN borrowers br ON brw.borrower_id = br.id WHERE br.id =($1) AND brw.return_date IS NULL';
+      const result = await conn.query(sql, [id]);
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      throw new Error(
+        `Unable to list borrowed books of a specific borrower : ${err}`
+      );
+    }
+  }
   async mostBorrowedBooks(): Promise<
     { title: string; author: string; borrow_count: number }[]
   > {
