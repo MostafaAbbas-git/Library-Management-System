@@ -50,7 +50,7 @@ export class BorrowingModel {
     }
   }
 
-  async update(id: number): Promise<Borrowing | null> {
+  async return_borrowing(id: number): Promise<Borrowing | null> {
     try {
       const conn = await Client.connect();
       const sql =
@@ -65,6 +65,32 @@ export class BorrowingModel {
     }
   }
 
+  async decrementBookQuantity(bookId: number): Promise<void> {
+    try {
+      const conn = await Client.connect();
+      const sql =
+        'UPDATE books SET available_quantity = available_quantity - 1 WHERE id = $1 AND available_quantity > 0';
+      const result = await conn.query(sql, [bookId]);
+      conn.release();
+
+      return result.rows.length ? result.rows[0] : null;
+    } catch (err) {
+      throw new Error(`Unable to decrement Book: ${bookId} Quantity; ${err}`);
+    }
+  }
+
+  async incrementBookQuantity(bookId: number): Promise<void> {
+    try {
+      const conn = await Client.connect();
+      const sql =
+        'UPDATE books SET available_quantity = available_quantity + 1 WHERE id = $1';
+      const result = await conn.query(sql, [bookId]);
+      conn.release();
+      return result.rows.length ? result.rows[0] : null;
+    } catch (err) {
+      throw new Error(`Unable to increment Book: ${bookId} Quantity; ${err}`);
+    }
+  }
   async delete(id: number): Promise<Borrowing | null> {
     try {
       const conn = await Client.connect();

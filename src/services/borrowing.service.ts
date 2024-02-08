@@ -1,11 +1,14 @@
 import { Buffer, Workbook } from 'exceljs';
 import { Borrowing, BorrowingModel } from '../models/borrowing.model';
 import { format } from 'date-fns';
+import { BookModel } from '../models/book.model';
+import redisClient from '../startup/redisClient';
 
 export class BorrowingService {
   private borrowingModel = new BorrowingModel();
+  private bookModel = new BookModel();
 
-  async indexAllBorrowings(): Promise<Borrowing[] | Error> {
+  async indexAllBorrowings(): Promise<Borrowing[]> {
     try {
       const borrowings = await this.borrowingModel.index();
       return borrowings;
@@ -14,7 +17,7 @@ export class BorrowingService {
     }
   }
 
-  async showBorrowingById(id: number): Promise<Borrowing | null | Error> {
+  async showBorrowingById(id: number): Promise<Borrowing | null> {
     try {
       const borrowing = await this.borrowingModel.show(id);
       return borrowing;
@@ -23,17 +26,33 @@ export class BorrowingService {
     }
   }
 
-  async create(borrowing: Borrowing): Promise<Borrowing | Error> {
+  async create(borrowing: Borrowing): Promise<Borrowing> {
     try {
-      return await this.borrowingModel.create(borrowing);
+      // Check book availability
+      const book = await this.bookModel.show(borrowing.book_id);
+
+      if (book && book.available_quantity > 0) {
+        await this.borrowingModel.decrementBookQuantity(borrowing.book_id);
+        await redisClient.del('allBooks'); // Invalidate cache
+        return await this.borrowingModel.create(borrowing);
+      } else {
+        throw new Error('Book is not available for borrowing');
+      }
     } catch (error) {
       throw new Error(`Error creating borrowing: ${error}`);
     }
   }
 
-  async returnBorrowing(id: number): Promise<Borrowing | null | Error> {
+  async returnBorrowing(borrowing_id: number): Promise<Borrowing | null> {
     try {
-      return await this.borrowingModel.update(id);
+      const borrowing = await this.borrowingModel.show(borrowing_id);
+      if (borrowing) {
+        await this.borrowingModel.incrementBookQuantity(borrowing.book_id);
+        await redisClient.del('allBooks'); // Invalidate cache
+        return await this.borrowingModel.return_borrowing(borrowing_id);
+      } else {
+        throw new Error(`Borrowing of id :${borrowing_id} does not exist.`);
+      }
     } catch (error) {
       throw new Error(`Error returning borrowing: ${error}`);
     }

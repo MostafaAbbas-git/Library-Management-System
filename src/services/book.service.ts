@@ -34,7 +34,7 @@ export class BookService {
     }
   }
 
-  async update(id: number, bookData: Book): Promise<Book | null | Error> {
+  async update(id: number, bookData: Book): Promise<Book | null> {
     try {
       return await this.bookModel.update({ id, ...bookData });
     } catch (error) {
@@ -42,7 +42,7 @@ export class BookService {
     }
   }
 
-  async delete(id: number): Promise<Book | null | Error> {
+  async delete(id: number): Promise<Book | null> {
     try {
       return await this.bookModel.delete(id);
     } catch (error) {
