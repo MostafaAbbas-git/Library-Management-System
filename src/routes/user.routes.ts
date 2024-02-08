@@ -9,6 +9,11 @@ router.post(
   validateInputsMiddleware(['email', 'password']),
   userController.createUser
 );
-router.post('/authenticate', userController.authenticate);
+
+router.post(
+  '/authenticate',
+  validateInputsMiddleware(['email', 'password']),
+  userController.authenticate
+);
 
 export default router;

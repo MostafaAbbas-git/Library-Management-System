@@ -240,6 +240,7 @@ This application is Dockerized for easy setup and deployment. Follow these steps
 | GET         | `/borrowings/getOverdueBorrowings`          | Get overdue borrowing records                   | User           |
 | POST        | `/users`                                    | Create a new user                               | Public         |
 | POST        | `/users/authenticate`                       | Authenticate a user and return a token          | Public         |
+| GET         | `/dashboard/current-borrowings/:id`         | Get all borrowings of specific borrower         | User           |
 | GET         | `/dashboard/most-borrowed-books`            | Get the most borrowed books                     | User           |
 | GET         | `/dashboard/borrowers-with-most-borrowings` | Get borrowers with the most borrowings          | User           |
 | GET         | `/dashboard/overdue-books`                  | Get overdue books                               | User           |
