@@ -89,7 +89,11 @@ export const createBook = async (
   try {
     const newBook = await bookService.create(req.body);
 
-    await redisClient.del('allBooks');
+    // await redisClient.del('allBooks');
+    const searchKeys = await redisClient.keys('search:*');
+    if (searchKeys.length > 0) {
+      await redisClient.del(searchKeys);
+    }
     res.status(201).json(newBook);
   } catch (err) {
     next(new CustomError(400, `Error creating book: ${err}`));

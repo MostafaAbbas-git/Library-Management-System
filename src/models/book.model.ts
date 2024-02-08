@@ -41,14 +41,17 @@ export class BookModel {
     try {
       const conn = await Client.connect();
 
+      // Using separate conditions for ISBN (exact match) and title/author (full-text search)
       const sql = `
-      SELECT *
+      SELECT id, title, author, isbn, available_quantity, shelf_location, 
+             ts_rank_cd(to_tsvector('english', title || ' ' || author), plainto_tsquery('english', $1)) AS rank
       FROM books
-      WHERE to_tsvector('english', title || ' ' || author || ' ' || isbn) @@ plainto_tsquery('english', $1)
-      ORDER BY ts_rank_cd(to_tsvector('english', title || ' ' || author || ' ' || isbn), plainto_tsquery('english', $1)) DESC;
+      WHERE isbn = $1
+         OR to_tsvector('english', title || ' ' || author) @@ plainto_tsquery('english', $1)
+      ORDER BY rank DESC, isbn = $1 DESC;
       `;
 
-      const result = await conn.query(sql, [`%${query}%`]);
+      const result = await conn.query(sql, [query]);
 
       conn.release();
       return result.rows;

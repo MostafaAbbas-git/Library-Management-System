@@ -31,7 +31,7 @@ export const createUser = async (
 ) => {
   try {
     const user = await userService.create(req.body);
-    res.status(201).json(user);
+    res.status(201).json({ id: user.id, email: user.email });
   } catch (error) {
     next(error);
   }

@@ -21,6 +21,10 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 
+// Middlewares
+app.use(bodyParser.json());
+app.use(cors(corsOptions));
+
 // Routes
 app.get('/', (req: Request, res: Response) => {
   res.send('Library Management System API');
@@ -32,9 +36,6 @@ app.use('/borrowers', borrowerRoutes);
 app.use('/borrowings', borrowingRoutes);
 app.use('/dashboard', dashboardRoutes);
 
-// Middlewares
-app.use(cors(corsOptions));
-app.use(bodyParser.json());
 app.use(errorHandlerMiddleware);
 
 export default app;

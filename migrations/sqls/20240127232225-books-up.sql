@@ -7,13 +7,14 @@ CREATE TABLE books(
     shelf_location VARCHAR(100) NOT NULL
 );
 
--- Indexes for optimization
-CREATE INDEX idx_books_title ON books(title);
+-- Replace individual title and author indexes with a GIN index for full-text search
+DROP INDEX IF EXISTS idx_books_title;
 
-CREATE INDEX idx_books_author ON books(author);
+DROP INDEX IF EXISTS idx_books_author;
 
 CREATE INDEX idx_books_isbn ON books(isbn);
 
+-- Adding a GIN index for full-text search on title and author
 CREATE INDEX idx_books_fulltext ON books USING gin (
-    to_tsvector('english', title || ' ' || author || ' ' || isbn)
+    to_tsvector('english', title || ' ' || author)
 );
